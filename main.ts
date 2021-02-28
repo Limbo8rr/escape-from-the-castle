@@ -37,6 +37,10 @@ scene.onOverlapTile(SpriteKind.Enemy, sprites.dungeon.floorLight1, function (spr
         }
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19`, function (sprite, location) {
+    info.changeScoreBy(80)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     let doorSwitch = 0
     if (currentLevel == 0 && (tiles.locationXY(location, tiles.XY.column) == 6 && tiles.locationXY(location, tiles.XY.row) == 5 && foundTorch == 0)) {
@@ -244,17 +248,10 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         tiles.setWallAt(tiles.getTileLocation(13, 17), false)
     }
 })
-function level_4 () {
-    scene.setBackgroundColor(9)
-    currentLevel = 4
-    tileNow = tiles.createMap(tilemap`level31`)
-    tiles.loadMap(tileNow)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(6, 16))
-    if (hasTreasureKey == 1) {
-        tiles.setWallAt(tiles.getTileLocation(16, 15), false)
-        tiles.setWallAt(tiles.getTileLocation(17, 15), false)
-    }
-}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6`, function (sprite, location) {
+    info.changeScoreBy(1)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.flame, function (sprite, otherSprite) {
     info.changeLifeBy(-5)
 })
@@ -408,6 +405,18 @@ function level_0 () {
         pause(1000)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
+    info.changeScoreBy(30)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
+    info.changeScoreBy(10)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile9`, function (sprite, location) {
+    info.changeScoreBy(50)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.trapLevel1, function (sprite, otherSprite) {
     otherSprite.setFlag(SpriteFlag.Invisible, false)
     timer.after(500, function () {
@@ -506,27 +515,12 @@ scene.onHitWall(SpriteKind.Enemy, function (sprite, location) {
     }
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairEast, function (sprite, location) {
-    levelCleanup()
-    if (currentLevel == 1) {
-        level_2()
-    } else if (currentLevel == 2) {
-        lvl3X = 18
-        lvl3Y = 6
-        level_3()
-    } else if (currentLevel == 3) {
-        level_4()
-    } else {
-    	
-    }
+    game.over(true)
 })
-function level_2 () {
-    currentLevel = 2
-    needToUseTorch = 0
-    tileNow = tiles.createMap(tilemap`level3`)
-    tiles.loadMap(tileNow)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(1, 3))
-    spawnEnemies2()
-}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite, location) {
+    info.changeScoreBy(3)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 function spawnEnemies0 () {
     bashersX = [2, 7, 13]
     bashersY = [2, 8, 13]
@@ -974,7 +968,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile5`, function (sprite, l
                 . . . f f f f f f f f f f . . . 
                 . . . . . . . . . . . . . . . . 
                 `)
-            level_3()
         })
     }
 })
@@ -1576,10 +1569,15 @@ function spawnEnemies2 () {
         lightningSpawned = 1
     })
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
+    info.changeScoreBy(20)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 function levelCleanup () {
     tiles.destroySpritesOfKind(SpriteKind.friend)
     tiles.destroySpritesOfKind(SpriteKind.Enemy)
     tiles.destroySpritesOfKind(SpriteKind.trapLevel1)
+    tiles.destroySpritesOfKind(SpriteKind.pika)
     tiles.destroySpritesOfKind(SpriteKind.flame)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleRedCrystal, function (sprite, location) {
@@ -1619,9 +1617,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
             flames,
             [img`
                 . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . 2 . . . . . . . 
-                . . . . . . . 2 2 2 . . . . . . 
-                . . . . . . . 2 4 2 . . . . . . 
+                . . . . . 2 . 2 4 . . . . . . . 
                 . . . . . . . 2 4 2 . . . . . . 
                 . . . . . . 2 4 5 2 2 . . . . . 
                 . . . . . 2 4 4 5 4 2 2 . . . . 
@@ -1631,15 +1629,15 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
                 . . . 2 4 4 5 5 5 4 5 4 2 . . . 
                 . . . 2 4 5 4 5 5 5 5 4 2 . . . 
                 . . . 2 4 2 5 4 5 5 5 4 2 . . . 
-                . . . . 2 5 5 5 5 5 5 4 . . . . 
-                . . . . 2 5 5 5 5 5 2 . . . . . 
+                . . . . 4 5 5 5 5 5 5 4 . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `,img`
                 . . . . . . . . . . . . . . . . 
-                . . . . . 2 . . . . . . . . . . 
-                . . . . . 2 2 2 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 2 2 . . . . . . . . . 
                 . . . . . . 2 2 4 . . . . . . . 
-                . . . . . . 2 2 4 . . . . . . . 
+                . . . . 2 . 2 2 4 . . . 2 . . . 
                 . . . . . . 2 4 5 2 2 . . . . . 
                 . . . . . 2 4 4 5 4 2 2 . . . . 
                 . . . 2 2 2 4 5 5 4 . 2 . . . . 
@@ -1649,15 +1647,15 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
                 . . . 2 4 5 4 5 5 5 5 4 2 . . . 
                 . . . 2 4 2 5 4 5 5 5 2 2 . . . 
                 . . . . 2 5 5 5 5 5 2 4 . . . . 
-                . . . . 2 2 5 5 5 2 2 . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `,img`
                 . . . . . . . . . . . . . . . . 
-                . . . . . 2 . . . . . . . . . . 
-                . . . . . 2 2 2 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 2 2 . . . . . . . 
+                . . . . . . 2 2 . . . . . . . . 
                 . . . . . . 2 2 2 2 . . . . . . 
-                . . . . . . 2 2 2 2 . . . . . . 
-                . . . . . . 2 4 5 2 2 . . . . . 
+                . . . . 2 . 2 4 5 2 2 . . . . . 
                 . . . . . 2 4 2 2 4 2 2 . . . . 
                 . . . 2 2 2 4 5 2 4 . 2 . . . . 
                 . . . 2 2 4 4 2 5 4 4 2 . . . . 
@@ -1666,14 +1664,14 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
                 . . . 2 2 5 4 5 2 2 2 4 2 . . . 
                 . . . 2 2 2 5 4 5 2 5 2 2 . . . 
                 . . . . 2 2 2 5 5 5 5 4 . . . . 
-                . . . . 2 5 5 5 5 2 5 . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `,img`
-                . . . . . . 2 . . . . . . . . . 
-                . . . . . 2 . . . . 2 . . . . . 
-                . . . 2 . 2 2 2 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 2 2 2 . . . . . . . . 
                 . . . . . . 2 2 2 5 . . . . . . 
-                . . . . . . 2 2 2 2 . . . . . . 
+                . . . . 2 . 2 2 2 2 . 2 . . . . 
                 . . . . . 5 2 4 5 2 5 . . . . . 
                 . . . . . 2 4 2 2 4 2 2 . . . . 
                 . . . 2 2 2 2 5 2 4 . 2 . . . . 
@@ -1683,7 +1681,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
                 . . . 2 5 5 4 5 2 2 2 4 2 . . . 
                 . . . 2 5 5 5 4 5 2 5 2 2 . . . 
                 . . . . 2 2 5 5 5 5 5 4 . . . . 
-                . . . . 2 5 5 5 5 2 5 . . . . . 
+                . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `],
             250,
@@ -1697,6 +1695,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight2, function (sp
     }
 })
 function torch () {
+    if (0 == 0) {
+        return
+    }
     tempTilemap = tiles.copyMap(tileNow)
     tiles.loadMap(tempTilemap)
     posX = Math.round(mySprite.x / 16 + 0.5) - 1
@@ -1715,37 +1716,16 @@ function level_1 () {
     currentLevel = 1
     tileNow = tiles.createMap(tilemap`level1`)
     tiles.loadMap(tileNow)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(1, 1))
-    lifeTorchTrap = sprites.create(img`
-        ........................
-        ........................
-        ........................
-        ........................
-        ........................
-        ..........ffff..........
-        ........ff1111ff........
-        .......fb111111bf.......
-        .....fffc1111111f.......
-        ...fc111cd1111111f......
-        ...f1b1b1b1111dddf......
-        ...fbfbffcf11fcddf......
-        ......fcf111111bbf......
-        .......ccbdb1b1fcf......
-        .......fffbfbfdff.......
-        ........ffffffff........
-        ........fffffffffff.....
-        .........fffffc111cf....
-        .........fffff1b1b1f....
-        ..........ffffbfbfbf....
-        ...........ffff.........
-        ........................
-        ........................
-        ........................
-        `, SpriteKind.trapLevel1)
-    lifeTorchTrap.setFlag(SpriteFlag.Invisible, true)
-    tiles.placeOnRandomTile(lifeTorchTrap, sprites.dungeon.floorDark0)
     torch()
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite, location) {
+    info.changeScoreBy(5)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
+    info.changeScoreBy(25)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     timer.after(150, function () {
         teleportCounter += 1
@@ -1768,15 +1748,6 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, func
         })
     })
 })
-function level_3 () {
-    currentLevel = 3
-    tileNow = tiles.createMap(tilemap`level29`)
-    tiles.loadMap(tileNow)
-    tiles.placeOnTile(mySprite, tiles.getTileLocation(lvl3X, lvl3Y))
-    spawnEnemies3()
-    controller.moveSprite(mySprite, 75, 75)
-    mySprite.setVelocity(0, 0)
-}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (currentLevel == 0 && recentTeleport == 1) {
         otherSprite.y += -16
@@ -1814,10 +1785,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     }
 })
 let index = 0
+let dead = 0
 let recentTeleport = 0
 let notHereYet: tiles.Location = null
 let teleportCounter = 0
-let lifeTorchTrap: Sprite = null
+let needToUseTorch = 0
 let posY = 0
 let posX = 0
 let tempTilemap: tiles.WorldMap = null
@@ -1827,10 +1799,9 @@ let lightning: Sprite = null
 let lightningY = 0
 let lightningX: number[] = []
 let mySprite2: Sprite = null
-let bashers: Sprite = null
-let needToUseTorch = 0
 let lvl3Y = 0
 let lvl3X = 0
+let bashers: Sprite = null
 let recentHit = 0
 let walls: number[][] = []
 let tempRow: string[] = []
@@ -1876,12 +1847,157 @@ mySprite = sprites.create(img`
 controller.moveSprite(mySprite, 75, 75)
 scene.cameraFollowSprite(mySprite)
 mySprite.setFlag(SpriteFlag.Ghost, false)
-info.setLife(200)
+info.setLife(50)
 torchRadius = 1
 level_0()
 game.onUpdate(function () {
     if (needToUseTorch == 1) {
         torch()
+    }
+})
+game.onUpdateInterval(1, function () {
+    if (info.score() == 80) {
+        tiles.setWallAt(tiles.getTileLocation(13, 7), false)
+    } else {
+        tiles.setWallAt(tiles.getTileLocation(13, 7), true)
+    }
+    if (dead == 0 && info.score() > 80) {
+        dead = 1
+        animation.runImageAnimation(
+        mySprite,
+        [img`
+            ......5.5.......
+            .....f555ff.....
+            ....f152516f....
+            ...f16666616f...
+            ...f66ffff61f...
+            ...f6ffddff6f...
+            ..f6fdfddfdf6f..
+            ..f6fd3dd3df6f..
+            ..f66fddddf66f..
+            .f66f3ffff3f66f.
+            ..ffd353353dff..
+            ..fddf3553fddf..
+            ...ff333333ff...
+            ...f33533533f...
+            ...ffffffffff...
+            .....ff..ff.....
+            ................
+            ................
+            ................
+            ................
+            `,img`
+            ......5.5.......
+            .....f555ff.....
+            ....f152516f....
+            ...f16666616f...
+            ...f66ffff61f...
+            ...f6ffddff6f...
+            ..f6fdfddfdf6f..
+            ..f6fd3dd3df6f..
+            ..f66fddddf66f..
+            .f66f3ffff3f66f.
+            ..ffd353353dff..
+            ..fddf3553fddf..
+            ...ff333333ff...
+            ...f33533533f...
+            ...ffffffffff...
+            .....ff..ff.....
+            .3333333333333..
+            .3333333333333..
+            ................
+            ................
+            `,img`
+            555..5...5....5.
+            .5..555.555..555
+            .....5...5....5.
+            .5..............
+            555...5.5.....5.
+            .5...f555ff..555
+            ....f152516f..5.
+            .5.f16666616f...
+            555f66ffff61f...
+            .5.f6ffddff6f...
+            ..f6fdfddfdf6f..
+            ..f6fd3dd3df6f..
+            ..f66fddddf66f.f
+            .f66f3ffff3f66fd
+            ..ffd353353dfffd
+            ..fddf3553fddddd
+            ...ff333333fffff
+            ...f33533533f...
+            ...ffffffffff...
+            .....ff..ff.....
+            `,img`
+            .....5...5.....5
+            ....555.555...55
+            .....5...5..5..5
+            ..5........555..
+            .555..5.5...5...
+            ..5..f555ff...5.
+            ....f152516f.555
+            .5.f16666616f.5.
+            555f66ffff61f...
+            .5.f6ffddff6f...
+            ..f6fdfddfdf6f..
+            ..f6fd3dd3df6f..
+            ..f66fddddf66f.f
+            .f66f3ffff3f66fd
+            ..ffd353353dfffd
+            ..fddf3553fddddd
+            ...ff333333fffff
+            ...f33533533f...
+            ...ffffffffff...
+            .....ff..ff.....
+            `,img`
+            ....555555......
+            ...5555555......
+            ...5555555......
+            ...5555555......
+            ......5.5.......
+            .....f555ff.....
+            ....f152516f....
+            ...f16666616f...
+            ...f66ffff61f...
+            ...f6ffddff6f...
+            ..f6fdfddfdf6f..
+            ..f6fd3dd3df6f..
+            ..f66fddddf66f.f
+            .f66f3ffff3f66fd
+            ..ffd353353dfffd
+            ..fddf3553fddddd
+            ...ff333333fffff
+            ...f33533533f...
+            ...ffffffffff...
+            .....ff..ff.....
+            `,img`
+            ................
+            .......5........
+            .......5........
+            ......55..2.....
+            .....55.5..2....
+            ...5522222222...
+            ..2221525565.2..
+            .2.516655555f.2.
+            ..55665255615222
+            ..226f5255f65.2.
+            ..25252d525f652.
+            ..22252d522f652.
+            2225225d5d26655f
+            2f52225f5f52665d
+            .5f2d25355352ff5
+            55252f2553f55225
+            55255523333f5f25
+            .255532335335..5
+            2555f525fffff555
+            2555555255555555
+            `],
+        200,
+        false
+        )
+        timer.after(1200, function () {
+            game.over(false)
+        })
     }
 })
 game.onUpdateInterval(800, function () {
